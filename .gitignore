@@ -1,0 +1,41 @@
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+
+# Godot
+client/.godot/
+client/.import/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Database
+*.db
+*.sqlite3
+
+# SSL Certificates and Keys
+server/certs/
+*.key
+*.crt
+*.pem
+*.p12
+*.pfx
+
+# Logs
+*.log
+*.pid

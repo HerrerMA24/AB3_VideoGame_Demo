@@ -1,6 +1,11 @@
 import django.conf
 import sys
 import pathlib
+import os
+from server.secrets import get_config
+
+# Get configuration from Secrets Manager or .env fallback
+config = get_config()
 
 # Required for importing the server app (upper dir)
 file = pathlib.Path(__file__).resolve()
@@ -13,8 +18,12 @@ INSTALLED_APPS = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': f'{root}/server/db.sqlite3'
+        'ENGINE': config['DB_ENGINE'],
+        'NAME': config['DB_NAME'],
+        'USER': config['DB_USER'],
+        'PASSWORD': config['DB_PASSWORD'],
+        'HOST': config['DB_HOST'],
+        'PORT': config['DB_PORT'],
     }
 }
 

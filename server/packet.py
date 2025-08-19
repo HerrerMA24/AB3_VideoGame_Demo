@@ -11,6 +11,11 @@ class Action(enum.Enum):
     Chat = enum.auto()
     ModelDelta = enum.auto()
     Target = enum.auto()
+    Pickup = enum.auto()
+    ItemSpawn = enum.auto()
+    ItemRemove = enum.auto()
+    Inventory = enum.auto()
+    InventoryRequest = enum.auto()
 
 
 class Packet:
@@ -59,6 +64,26 @@ class ModelDeltaPacket(Packet):
 class TargetPacket(Packet):
     def __init__(self, t_x: float, t_y: float):
         super().__init__(Action.Target, t_x, t_y)
+
+class PickupPacket(Packet):
+    def __init__(self, item_id: int):
+        super().__init__(Action.Pickup, item_id)
+
+class ItemSpawnPacket(Packet):
+    def __init__(self, item_data: dict):
+        super().__init__(Action.ItemSpawn, item_data)
+
+class ItemRemovePacket(Packet):
+    def __init__(self, item_id: int):
+        super().__init__(Action.ItemRemove, item_id)
+
+class InventoryPacket(Packet):
+    def __init__(self, inventory_data: list):
+        super().__init__(Action.Inventory, inventory_data)
+
+class InventoryRequestPacket(Packet):
+    def __init__(self):
+        super().__init__(Action.InventoryRequest)
 
 
 def from_json(json_str: str) -> Packet:

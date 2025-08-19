@@ -16,6 +16,7 @@ func _ready():
 	_client.connect("connection_error", self, "_closed")
 	_client.connect("connection_established", self, "_connected")
 	_client.connect("data_received", self, "_on_data")
+	_client.verify_ssl = false
 
 
 func connect_to_server(hostname: String, port: int) -> void:

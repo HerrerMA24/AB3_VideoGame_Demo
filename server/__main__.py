@@ -1,8 +1,9 @@
 import manage   # This must be at the top
 import sys
+import os
 import protocol
 from twisted.python import log
-from twisted.internet import reactor, task
+from twisted.internet import reactor, task, ssl
 from autobahn.twisted.websocket import WebSocketServerFactory
 
 
@@ -30,9 +31,11 @@ class GameFactory(WebSocketServerFactory):
 
 if __name__ == '__main__':
     log.startLogging(sys.stdout)
-
+    
+    # Demo mode - HTTP only (no SSL)
     PORT: int = 8081
     factory = GameFactory('0.0.0.0', PORT)
-
     reactor.listenTCP(PORT, factory)
+    print("Starting demo server (HTTP) on port 8081")
+    
     reactor.run()

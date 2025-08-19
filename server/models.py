@@ -16,6 +16,12 @@ def create_dict(model: models.Model) -> dict:
         d["instanced_entity"] = create_dict(model.instanced_entity)
         # Purposefully don't include user information here.
     
+    elif model_type == WorldItem:
+        d["item"] = create_dict(model.item)
+    
+    elif model_type == Inventory:
+        d["item"] = create_dict(model.item)
+    
     return d
 
 def get_delta_dict(model_dict_before: dict, model_dict_after: dict) -> dict:
@@ -44,7 +50,7 @@ def get_delta_dict(model_dict_before: dict, model_dict_after: dict) -> dict:
 
 class User(models.Model):
     username = models.CharField(unique=True, max_length=20)
-    password = models.CharField(max_length=99)
+    cognito_user_id = models.CharField(max_length=100)
 
 class Entity(models.Model):
     name = models.CharField(max_length=100)
@@ -58,3 +64,21 @@ class Actor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     instanced_entity = models.OneToOneField(InstancedEntity, on_delete=models.CASCADE)
     avatar_id = models.IntegerField(default=0)
+
+class Item(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    item_type = models.CharField(max_length=20)  # weapon, potion, etc.
+
+class WorldItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    x = models.FloatField()
+    y = models.FloatField()
+    
+class Inventory(models.Model):
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    
+    class Meta:
+        unique_together = ('actor', 'item')
